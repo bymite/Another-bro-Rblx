@@ -1,6 +1,11 @@
-FROM golang:1.21-alpine
-WORKDIR /app
-COPY server.go .
-RUN go build -o server server.go
+FROM alpine:latest
+
+RUN apk add --no-cache git make gcc musl-dev
+
+RUN git clone https://github.com/rofl0r/microsocks && \
+    cd microsocks && make && cp microsocks /usr/local/bin/ && \
+    cd .. && rm -rf microsocks
+
 EXPOSE 1080
-CMD ["./server"]
+
+CMD ["microsocks", "-p", "1080"]
