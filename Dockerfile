@@ -1,11 +1,6 @@
-FROM alpine:latest
-
-RUN apk add --no-cache dante-server bash
-
-COPY sockd.conf /etc/sockd.conf
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
+FROM golang:1.21-alpine
+WORKDIR /app
+COPY server.go .
+RUN go build -o server server.go
 EXPOSE 1080
-
-CMD ["/start.sh"]
+CMD ["./server"]
